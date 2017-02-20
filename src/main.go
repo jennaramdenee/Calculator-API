@@ -36,7 +36,5 @@ func AdditionHandler(w http.ResponseWriter, r *http.Request){
     }
   }
 
-  output := strconv.FormatFloat(sum, 'f', -1, 64)
-
-  fmt.Fprintf(w, output)
+  fmt.Fprint(w, sum)
 }
