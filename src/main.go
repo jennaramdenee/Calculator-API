@@ -4,7 +4,9 @@ import (
   "fmt"
   "net/http"
   "log"
+  "strings"
   "github.com/gorilla/mux"
+  "strconv"
 )
 
 func main(){
@@ -17,5 +19,24 @@ func main(){
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request){
+  defer r.Body.Close()
   fmt.Fprintf(w, "Hello World")
+}
+
+func AdditionHandler(w http.ResponseWriter, r *http.Request){
+  defer r.Body.Close()
+  vars := mux.Vars(r)["numbers"]
+
+  var sum float64 = 0
+
+  s := strings.Split(vars, ",")
+  for _, value := range s {
+    if num, err := strconv.ParseFloat(value, 64); err == nil {
+      sum += num
+    }
+  }
+
+  output := strconv.FormatFloat(sum, 'f', -1, 64)
+
+  fmt.Fprintf(w, output)
 }
