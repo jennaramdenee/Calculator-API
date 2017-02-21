@@ -1,4 +1,4 @@
-# Calculator API - WORK IN PROGRESS
+# Calculator API
 
 ### Purpose
 
