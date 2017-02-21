@@ -30,32 +30,24 @@ func IndexHandler(w http.ResponseWriter, r *http.Request){
 
 func AdditionHandler(w http.ResponseWriter, r *http.Request){
   defer r.Body.Close()
-  vars := mux.Vars(r)["numbers"]
   inputs := GetURLInput(r, "numbers")
-
-  var sum float64 = 0
-  for _, value := range inputs {
-    if num, err := strconv.ParseFloat(value, 64); err == nil {
-      sum += num
-    }
-  }
-
+  sum := Reduce(float64(0), inputs, Add)
   fmt.Fprint(w, sum)
 }
 
 func MultiplicationHandler(w http.ResponseWriter, r *http.Request){
   defer r.Body.Close()
   inputs := GetURLInput(r, "numbers")
-
-  var sum float64 = 1
-  for _, value := range inputs {
-    if num, err := strconv.ParseFloat(value, 64); err == nil {
-      sum *= num
-    }
-  }
-
+  sum := Reduce(float64(1), inputs, Multiply)
   fmt.Fprint(w, sum)
+}
 
+func Multiply(x, y float64) float64 {
+  return x * y
+}
+
+func Add(x, y float64) float64 {
+  return x + y
 }
 
 func GetURLInput(r *http.Request, s string) []string {
@@ -63,13 +55,11 @@ func GetURLInput(r *http.Request, s string) []string {
   return strings.Split(vars, ",")
 }
 
-
-// func Reduce(output float64, inputs []string) float64 {
-//   var sum := output
-//   for _, value := range inputs {
-//     if num, err := strconv.ParseFloat(value, 64); err == nil {
-//       sum *= num
-//     }
-//   }
-//
-// }
+func Reduce(output float64, inputs []string, fn func(float64, float64) float64) float64 {
+  for _, value := range inputs {
+    if num, err := strconv.ParseFloat(value, 64); err == nil {
+      output = fn(output, num)
+    }
+  }
+  return output
+}
