@@ -9,10 +9,15 @@ import (
   "strconv"
 )
 
+type Answer struct {
+  Answer  float64
+}
+
 func main(){
   router := mux.NewRouter()
   router.HandleFunc("/", IndexHandler)
   router.HandleFunc("/add/{numbers}", AdditionHandler)
+  router.HandleFunc("/multiply/{numbers}", MultiplicationHandler)
 
   http.Handle("/", router)
   log.Fatal(http.ListenAndServe(":8080", router))
@@ -27,9 +32,9 @@ func AdditionHandler(w http.ResponseWriter, r *http.Request){
   defer r.Body.Close()
   vars := mux.Vars(r)["numbers"]
 
-  var sum float64 = 0
-
   s := strings.Split(vars, ",")
+
+  var sum float64 = 0
   for _, value := range s {
     if num, err := strconv.ParseFloat(value, 64); err == nil {
       sum += num
@@ -37,4 +42,21 @@ func AdditionHandler(w http.ResponseWriter, r *http.Request){
   }
 
   fmt.Fprint(w, sum)
+}
+
+func MultiplicationHandler(w http.ResponseWriter, r *http.Request){
+  defer r.Body.Close()
+  vars := mux.Vars(r)["numbers"]
+
+  s := strings.Split(vars, ",")
+
+  var sum float64 = 1
+  for _, value := range s {
+    if num, err := strconv.ParseFloat(value, 64); err == nil {
+      sum *= num
+    }
+  }
+
+  fmt.Fprint(w, sum)
+
 }
