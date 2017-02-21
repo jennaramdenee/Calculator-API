@@ -2,7 +2,7 @@
 
 ### Purpose
 
-A simple HTTP API that uses Golang to perform basic calculations, as input by the user (add, multiply, subtract, division).
+A simple HTTP API that uses Golang to perform basic calculations, as input by the user (currently supports add, multiply operators).
 
 ### How to Use
 
@@ -13,3 +13,5 @@ A simple HTTP API that uses Golang to perform basic calculations, as input by th
 5. Run `go build` to build the program
 6. Run `./src` to start the program
 7. Navigate to `http://localhost:8080/` to use the API
+  - For addition, visit `http://localhost:8080/add/x,y,z` where `x`, `y` and `z` are numbers to add
+  - For multiplcation, visit `http://localhost:8080/multiply/x,y,z` where `x`, `y` and `z` are numbers to multiply
